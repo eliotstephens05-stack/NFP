@@ -1,0 +1,764 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,maximum-scale=1">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Cycle Chart">
+<meta name="theme-color" content="#0F3152">
+<meta name="color-scheme" content="light">
+<link rel="apple-touch-icon" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAALQAAAC0CAIAAACyr5FlAAAE70lEQVR4nO3dPY7bRgAGUG3gckt1LtZADrFOlcqV4RPsKdyk8AFc5B4+QeADuEp8iAB2v2UOkEIAISz3487wZ0SR73Urj0ha/DgznJE4N6/ffTzAc14dDof/Hn8Wlr493im8n8K/FJZjh4SDSDiIhINIOIiEg0g4iISDSDiIhINIOIiEg0g4iG5M2ZOYslc40qwQCQeRcBAJB5FwEAkHkXAQCQeRcBAJB5FwEAkHkXAQmbInMmWvcKRZIRIOIuEgEg4i4SASDiLhIBIOIuEgEg4i4SASDiLhIDJlT2TKXuFIs0IkHETCQSQcRMJBJBxEwkEkHETCQSQcRMJBJBxEwkFkyn7jfnz9fP7nm/efyt978/rdxzXMDiu8ROHH71/6Lx7vHwq3rFnZrGeTMfB6n3Bs03ACCvPxaqaDodqTM1Re29duOZV5cY9qjsvon7/y2r4Z4biA6b2BNoSjtVl6A4tuoaPP0VRhb2BgNGKgpzJ7xaPmuCapp/L4/UttMkr6v2qONeqGNUsqhidjoCUK74yEo5ERp/AwraU43j9MHCEVjhkMj1i0vwfpDqCfj6q5FeGY6tl+wOn0XDAW6ZXb41351oRjktlHLE7n8jSXtkQfs4op+/HGdSNOFfuz7011fuGOqpqMEn5lP7LwiLrh/Mru9wbO/7XqmDslb6nasmalheP9Q7+xL28F0n3HuK2VMwi2rOP9wyynbXgjSyTjIBxXJCVg9q5GRziuyYt3qvPS5xjpUv2ARdPwhJpjvOH6vOVZXIhwjDcw/LCBZByEYwnbSMZBn2NGm8lER80x0tq+77kE4SASjjH61cb22pSDcDDAlH21/h3scgPYl2XKfnzhzuxz5SsprFmZapO9jRPhqLOHO9iOcBAJR4Wd3MF2hINIOEr1q42t3sF2hIOo4mmCf/3+z9JHs2a//fnv+Z9///HrpY5kug/f3pYUU3MUeZKMnRAOooov+3z49nYlw7qNC4c72O1/GmoOIuF4wd4Gvs6Zsn/Bfibo+0zZ1xUe/Vv4ayysWRmyqznYPuEgEo5oz13Rkyv4UdNyqwswbO01x6VWF1BtHEbXHG2u5oFn9u7wVLU3puZoczUvvbpAlX1msTocbdYKKVxdYMY9nvz4+nnEQ+a3qi4cww/EvPbP9NqPf3YVfY65Vg6b0cDuantFA/+7fbYphxXerdTW6qfyT95S2ytaVf9mPeYf5xh9NU88By++PR3YCmvElVhkEKz7uIfXkmm/usD5Od5tfVCuYsp+3HPgN2M/M/Wdiin7kidvzmigUnnz/lN3zM0Oqf8prWRifS1T9m2unvPnhb/4zN5T4R12CBqo7nOUrBw2cSmakhfLD6xkdxd5FvH6jemQDq8V0v15e7wr76actxRLe7Y2Ms7RN/JuZbmreYopzyOfvpbi9qxuEGyiKeuSNF6TYP0W/7JP4dVctWrhuD2WnOmWrdv6tag52q8ypA6YRaOvCbZv0bstj3tAIIeWfQ5X89Vp+gVjabguW7tbYUbCQSQcRH5lT+RX9gpHmhUi4SASDiLhIBIOIuEgEg4i4SASDiLhIBIOIuEgEg4iU/ZEpuwVjjQrRMJBJBxEwkEkHETCQSQcRMJBJBxEwkEkHETCQSQcRKbsiUzZKxxpVoiEg0g4iISDSDiIhINIOIiEg0g4iISDSDiIhINIOIj+B+m0TuQIcOTdAAAAAElFTkSuQmCC">
+<link rel="icon" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAALQAAAC0CAIAAACyr5FlAAAE70lEQVR4nO3dPY7bRgAGUG3gckt1LtZADrFOlcqV4RPsKdyk8AFc5B4+QeADuEp8iAB2v2UOkEIAISz3487wZ0SR73Urj0ha/DgznJE4N6/ffTzAc14dDof/Hn8Wlr493im8n8K/FJZjh4SDSDiIhINIOIiEg0g4iISDSDiIhINIOIiEg0g4iG5M2ZOYslc40qwQCQeRcBAJB5FwEAkHkXAQCQeRcBAJB5FwEAkHkXAQmbInMmWvcKRZIRIOIuEgEg4i4SASDiLhIBIOIuEgEg4i4SASDiLhIDJlT2TKXuFIs0IkHETCQSQcRMJBJBxEwkEkHETCQSQcRMJBJBxEwkFkyn7jfnz9fP7nm/efyt978/rdxzXMDiu8ROHH71/6Lx7vHwq3rFnZrGeTMfB6n3Bs03ACCvPxaqaDodqTM1Re29duOZV5cY9qjsvon7/y2r4Z4biA6b2BNoSjtVl6A4tuoaPP0VRhb2BgNGKgpzJ7xaPmuCapp/L4/UttMkr6v2qONeqGNUsqhidjoCUK74yEo5ERp/AwraU43j9MHCEVjhkMj1i0vwfpDqCfj6q5FeGY6tl+wOn0XDAW6ZXb41351oRjktlHLE7n8jSXtkQfs4op+/HGdSNOFfuz7011fuGOqpqMEn5lP7LwiLrh/Mru9wbO/7XqmDslb6nasmalheP9Q7+xL28F0n3HuK2VMwi2rOP9wyynbXgjSyTjIBxXJCVg9q5GRziuyYt3qvPS5xjpUv2ARdPwhJpjvOH6vOVZXIhwjDcw/LCBZByEYwnbSMZBn2NGm8lER80x0tq+77kE4SASjjH61cb22pSDcDDAlH21/h3scgPYl2XKfnzhzuxz5SsprFmZapO9jRPhqLOHO9iOcBAJR4Wd3MF2hINIOEr1q42t3sF2hIOo4mmCf/3+z9JHs2a//fnv+Z9///HrpY5kug/f3pYUU3MUeZKMnRAOooov+3z49nYlw7qNC4c72O1/GmoOIuF4wd4Gvs6Zsn/Bfibo+0zZ1xUe/Vv4ayysWRmyqznYPuEgEo5oz13Rkyv4UdNyqwswbO01x6VWF1BtHEbXHG2u5oFn9u7wVLU3puZoczUvvbpAlX1msTocbdYKKVxdYMY9nvz4+nnEQ+a3qi4cww/EvPbP9NqPf3YVfY65Vg6b0cDuantFA/+7fbYphxXerdTW6qfyT95S2ytaVf9mPeYf5xh9NU88By++PR3YCmvElVhkEKz7uIfXkmm/usD5Od5tfVCuYsp+3HPgN2M/M/Wdiin7kidvzmigUnnz/lN3zM0Oqf8prWRifS1T9m2unvPnhb/4zN5T4R12CBqo7nOUrBw2cSmakhfLD6xkdxd5FvH6jemQDq8V0v15e7wr76actxRLe7Y2Ms7RN/JuZbmreYopzyOfvpbi9qxuEGyiKeuSNF6TYP0W/7JP4dVctWrhuD2WnOmWrdv6tag52q8ypA6YRaOvCbZv0bstj3tAIIeWfQ5X89Vp+gVjabguW7tbYUbCQSQcRH5lT+RX9gpHmhUi4SASDiLhIBIOIuEgEg4i4SASDiLhIBIOIuEgEg4iU/ZEpuwVjjQrRMJBJBxEwkEkHETCQSQcRMJBJBxEwkEkHETCQSQcRKbsiUzZKxxpVoiEg0g4iISDSDiIhINIOIiEg0g4iISDSDiIhINIOIj+B+m0TuQIcOTdAAAAAElFTkSuQmCC">
+<title>Cycle Chart</title>
+<style>
+:root{
+  --paper:#FBFAF7; --ink:#0F3152; --ink-2:#3C6790; --rule:#CBDAE7; --rule-2:#9DB8D0;
+  --peach:#F3D3AC; --sage:#D9E4C7; --brick:#9E3B2C; --amber:#C2701A; --line:#123E68;
+  --text:#1B2733; --muted:#6E7F8E; --tab-h:58px;
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;padding:0;background:var(--paper);color:var(--text);
+  font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text",ui-sans-serif,system-ui,sans-serif;
+  font-size:15px;-webkit-text-size-adjust:100%}
+body{padding-bottom:calc(var(--tab-h) + env(safe-area-inset-bottom))}
+button{font:inherit;color:inherit;cursor:pointer}
+input,select,textarea{font-family:inherit;font-size:16px;color:var(--text)} /* 16px stops iOS zoom */
+:focus-visible{outline:2px solid var(--amber);outline-offset:1px}
+
+/* ---------- header ---------- */
+.top{position:sticky;top:0;z-index:20;background:rgba(251,250,247,.94);
+  backdrop-filter:saturate(180%) blur(12px);-webkit-backdrop-filter:saturate(180%) blur(12px);
+  border-bottom:1px solid var(--rule);padding:calc(env(safe-area-inset-top) + 10px) 14px 10px}
+.top-row{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.top h1{margin:0;font-size:17px;font-weight:640;letter-spacing:-.01em;color:var(--ink)}
+.top .sub{font-size:11px;color:var(--muted);margin-top:1px}
+.pick{background:#fff;border:1px solid var(--rule-2);border-radius:8px;padding:7px 9px;font-size:13px;max-width:52%}
+.savetag{font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);height:12px;margin-top:6px}
+.warn{background:#FBEEE9;border:1px solid #E4BBAE;color:var(--brick);border-radius:8px;
+  padding:8px 10px;font-size:12px;line-height:1.4;margin:10px 14px 0}
+
+/* ---------- layout ---------- */
+.wrap{padding:14px}
+.card{background:#fff;border:1px solid var(--rule);border-radius:12px;padding:14px;margin-bottom:12px}
+.card h2{margin:0 0 10px;font-size:11px;text-transform:uppercase;letter-spacing:.12em;color:var(--ink);
+  border-bottom:1px solid var(--rule);padding-bottom:7px}
+.note{font-size:11.5px;color:var(--muted);line-height:1.5;margin:8px 0 0}
+.field{display:block;margin-bottom:12px}
+.field>span{display:block;font-size:11px;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);margin-bottom:5px}
+input[type=text],input[type=number],input[type=date],input[type=time],input[type=email],textarea{
+  width:100%;background:#fff;border:1px solid var(--rule-2);border-radius:8px;padding:10px}
+textarea{resize:vertical}
+.inline{display:flex;gap:6px;flex-wrap:wrap;align-items:center}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.seg{background:#fff;border:1px solid var(--rule-2);border-radius:8px;padding:9px 12px;font-size:14px}
+.seg.on{background:var(--ink);border-color:var(--ink);color:#fff}
+.seg.wide{flex:1;text-align:center}
+.seg.danger{color:var(--brick)}
+.seg:disabled{opacity:.45}
+
+/* ---------- day view ---------- */
+.dayhead{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:12px}
+.dayhead .eyebrow{font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--amber)}
+.dayhead h2{margin:2px 0 0;font-size:19px;font-weight:620;color:var(--ink);border:none;padding:0;
+  text-transform:none;letter-spacing:-.01em}
+.step{width:44px;height:44px;border-radius:22px;border:1px solid var(--rule-2);background:#fff;
+  font-size:19px;display:flex;align-items:center;justify-content:center}
+.flag{margin:0 0 12px;padding:9px 11px;background:#EDF3F9;border-left:3px solid var(--ink-2);
+  font-size:12.5px;color:var(--ink);border-radius:0 6px 6px 0}
+.tempbox{display:flex;align-items:center;gap:10px}
+.tempbox input{flex:1;font-size:30px;font-weight:600;text-align:center;padding:12px 6px;
+  font-variant-numeric:tabular-nums;letter-spacing:-.02em;color:var(--ink)}
+.chips{display:flex;flex-wrap:wrap;gap:7px}
+.chip{display:flex;align-items:center;gap:7px;background:#fff;border:1px solid var(--rule-2);
+  border-radius:10px;padding:10px 12px;font-size:13px;color:var(--muted);min-height:44px}
+.chip b{font-size:16px;color:var(--ink);font-weight:600}
+.chip.on{background:var(--ink);border-color:var(--ink);color:#fff}
+.chip.on b{color:#fff}
+
+/* ---------- chart view ---------- */
+.readout{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--rule);
+  border:1px solid var(--rule);border-radius:12px;overflow:hidden;margin-bottom:12px}
+.readout>div{background:#fff;padding:9px 11px}
+.readout .k{display:block;font-size:9.5px;text-transform:uppercase;letter-spacing:.1em;color:var(--muted)}
+.readout .v{display:block;margin-top:3px;font-size:12.5px;color:var(--ink);
+  font-family:ui-monospace,SFMono-Regular,Menlo,monospace;line-height:1.35}
+.scroll{overflow-x:auto;-webkit-overflow-scrolling:touch;border:1px solid var(--rule-2);
+  border-radius:12px;background:#fff}
+.inner{min-width:min-content}
+.row{display:flex;border-bottom:1px solid var(--rule)}
+.row:last-child{border-bottom:none}
+.gut{position:sticky;left:0;z-index:3;flex:0 0 96px;width:96px;background:#fff;
+  border-right:1px solid var(--rule-2);display:flex;flex-direction:column;justify-content:center;padding:4px 7px}
+.gut span{font-size:10.5px;font-weight:600;color:var(--ink);line-height:1.15}
+.gut em{font-style:normal;font-size:8.5px;color:var(--muted);margin-top:1px}
+.cells{display:flex}
+.cell{height:30px;width:28px;flex:0 0 28px;border:none;border-right:1px solid var(--rule);
+  background:transparent;padding:0;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;
+  font-size:12px;color:var(--ink);display:flex;align-items:center;justify-content:center;line-height:1}
+.cell.sel{background:#E3EEF7;box-shadow:inset 0 0 0 1px var(--ink-2)}
+.cell.band{background:var(--peach);font-weight:600;height:24px;color:#5A3A18}
+.cell.band.day6{background:var(--ink-2);color:#fff}
+.cell.band.today{box-shadow:inset 0 -3px 0 var(--brick)}
+.cell.quiet{height:22px;font-size:9.5px;color:var(--muted)}
+.cell.menses.filled{color:var(--brick);font-size:14px}
+.cell.coitus{color:var(--ink-2);font-size:14px}
+.cell.peak.filled{background:var(--amber);color:#fff;font-weight:700}
+.cell.peak em{font-style:normal;color:var(--amber);font-weight:700}
+.cell.symbol{font-size:15px}
+.cell.symbol.more{color:var(--brick)}
+.cell.symbol.less{color:var(--amber)}
+.cell.symbol.none{color:var(--muted)}
+.cell.letter b{display:inline-flex;align-items:center;justify-content:center;min-width:18px;height:18px;
+  padding:0 3px;border-radius:9px;background:var(--ink);color:#fff;font-size:10px;font-weight:600}
+.cell.custom{font-size:9px;color:var(--muted)}
+.phaseband{position:relative;height:20px;background:#F7F9FB}
+.phaseband span{position:absolute;top:0;height:20px;display:flex;align-items:center;justify-content:center;
+  font-size:10px;font-weight:700;letter-spacing:.1em;border-right:1px solid #fff}
+.phI,.phIII{background:var(--sage);color:#40542C}
+.phII{background:#F7E3E0;color:var(--brick)}
+.axis{position:relative;flex:0 0 96px;width:96px;border-right:1px solid var(--rule-2);background:#fff;
+  position:sticky;left:0;z-index:3}
+.axis i{position:absolute;right:7px;font-style:normal;font-family:ui-monospace,monospace;
+  font-size:9.5px;color:var(--ink-2)}
+svg.graph{display:block;background:#FDFDFB}
+.g{stroke:var(--rule);stroke-width:1}
+.gm{stroke:var(--rule-2);stroke-width:1}
+.selrect{fill:#E3EEF7;opacity:.8}
+.tline{fill:none;stroke:var(--line);stroke-width:1.8;stroke-linejoin:round}
+.dot{fill:var(--line)}
+.dot-open{fill:#fff;stroke:var(--line);stroke-width:1.8}
+.ltl{stroke:var(--brick);stroke-width:1.4;stroke-dasharray:6 4}
+.ltltag{fill:var(--brick);font-size:9px;letter-spacing:.06em;text-transform:uppercase}
+.cnt{fill:var(--brick);font-size:10px;font-weight:700;font-family:ui-monospace,monospace}
+.hint{font-size:11.5px;color:var(--muted);margin:10px 2px 0;line-height:1.5}
+
+/* ---------- tab bar ---------- */
+.tabs{position:fixed;left:0;right:0;bottom:0;z-index:30;display:flex;
+  background:rgba(251,250,247,.96);backdrop-filter:saturate(180%) blur(12px);
+  -webkit-backdrop-filter:saturate(180%) blur(12px);border-top:1px solid var(--rule);
+  padding-bottom:env(safe-area-inset-bottom)}
+.tabs button{flex:1;background:none;border:none;padding:9px 4px 8px;display:flex;flex-direction:column;
+  align-items:center;gap:3px;font-size:10px;letter-spacing:.04em;color:var(--muted);height:var(--tab-h)}
+.tabs button svg{width:21px;height:21px;stroke:currentColor;fill:none;stroke-width:1.7}
+.tabs button.on{color:var(--ink);font-weight:600}
+@media (min-width:720px){ .wrap{max-width:760px;margin:0 auto} }
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+</style>
+</head>
+<body>
+<div id="app"></div>
+<input type="file" id="importer" accept="application/json,.json" style="display:none">
+<script>
+"use strict";
+
+/* ============================================================
+   Constants and vocabulary — same as the paper chart
+   ============================================================ */
+var DAYS=40, COL=28, CHART_H=300, KEY="ctc:chart:v1";
+var SCALE={
+  F:{top:99.2,bottom:96.8,step:0.1,major:0.5,dec:1,unit:"\u00B0F"},
+  C:{top:37.4,bottom:36.0,step:0.05,major:0.25,dec:2,unit:"\u00B0C"}
+};
+var WEEKDAYS=["Sun","Mon","Tue","Wed","Thu","Fri","Sat"];
+var MENSES=[{v:"heavy",g:"\u2715",n:"Heavy"},{v:"light",g:"\u2571",n:"Light"},{v:"spotting",g:"\u25CF",n:"Spotting"}];
+var SYMBOL=[{v:"none",g:"\u25CB",n:"No mucus"},{v:"less",g:"\u2296",n:"Less-fertile"},{v:"more",g:"\u2295",n:"More-fertile"}];
+var SENSATION=[{v:"d",g:"d",n:"Dry"},{v:"m",g:"m",n:"Moist"},{v:"w",g:"w",n:"Wet"},{v:"sl",g:"sl",n:"Slippery"}];
+var CHARACTER=[{v:"n",g:"n",n:"Nothing"},{v:"t",g:"t",n:"Tacky"},{v:"s",g:"s",n:"Stretchy"}];
+
+var fToC=function(f){return (f-32)*5/9;};
+var cToF=function(c){return c*9/5+32;};
+var clean=function(v,d){return +Number(v).toFixed(d);};
+var uid=function(){return Math.random().toString(36).slice(2,9);};
+var esc=function(s){return String(s==null?"":s).replace(/[&<>"']/g,function(c){
+  return {"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[c];});};
+
+function parseISO(s){ if(!s) return null; var p=s.split("-").map(Number);
+  if(!p[0]||!p[1]||!p[2]) return null; return new Date(p[0],p[1]-1,p[2]); }
+function toISO(d){ var p=function(n){return String(n).padStart(2,"0");};
+  return d.getFullYear()+"-"+p(d.getMonth()+1)+"-"+p(d.getDate()); }
+function addDays(d,n){ var c=new Date(d.getTime()); c.setDate(c.getDate()+n); return c; }
+function between(a,b){ return Math.round((b-a)/86400000); }
+
+/* ============================================================
+   State
+   ============================================================ */
+function newChart(number,startDate){
+  return {id:uid(),number:number,startDate:startDate||toISO(new Date()),cycleLength:null,days:{},notes:""};
+}
+function initialState(){
+  var c=newChart(1,toISO(new Date()));
+  return {profile:{name:"",email:"",age:"",height:"",weight:""},
+    temperature:{time:"",method:"oral",device:"",deviceDetail:""},
+    rules:{phase1Rule:"6",doering:false},
+    customRows:[{id:uid(),label:""}],
+    unit:"F", charts:[c], activeId:c.id};
+}
+
+var state=null, view="day", selected=1, storageOK=true, saveTimer=null, saveTag="", scrollX=0;
+
+function load(){
+  var raw=null;
+  try{ raw=localStorage.getItem(KEY); }catch(e){ storageOK=false; }
+  if(raw){ try{ return JSON.parse(raw); }catch(e){} }
+  return null;
+}
+function save(){
+  clearTimeout(saveTimer);
+  saveTimer=setTimeout(function(){
+    try{ localStorage.setItem(KEY,JSON.stringify(state)); saveTag="Saved";
+      setTimeout(function(){ saveTag=""; var el=document.querySelector(".savetag"); if(el) el.textContent=""; },1500);
+      var el=document.querySelector(".savetag"); if(el) el.textContent=saveTag;
+    }catch(e){ storageOK=false; render(); }
+  },400);
+}
+
+function chart(){ var c=null; for(var i=0;i<state.charts.length;i++) if(state.charts[i].id===state.activeId) c=state.charts[i];
+  return c||state.charts[state.charts.length-1]; }
+function dayRec(d){ return chart().days[d]||{}; }
+function setDay(d,patch){ var c=chart(); var cur=c.days[d]||{};
+  for(var k in patch) cur[k]=patch[k]; c.days[d]=cur; save(); }
+function setPeak(d,on){ var c=chart();
+  for(var k in c.days) if(c.days[k].peak) c.days[k].peak=false;
+  if(on){ c.days[d]=c.days[d]||{}; c.days[d].peak=true; } save(); }
+function cycleVal(d,key,opts){
+  var cur=dayRec(d)[key]||null, idx=-1;
+  for(var i=0;i<opts.length;i++) if(opts[i].v===cur) idx=i;
+  setDay(d,(function(){var o={};o[key]=(idx===opts.length-1)?null:opts[idx+1].v;return o;})());
+}
+
+/* ============================================================
+   Rules
+   ============================================================ */
+function analyze(c,rules){
+  var days=c.days||{}, temps=[], d, r;
+  for(d=1;d<=DAYS;d++){ r=days[d];
+    if(r&&typeof r.temp==="number"&&!r.disturbed) temps.push({day:d,t:r.temp}); }
+
+  var shift=null;
+  for(var i=6;i<temps.length;i++){
+    var prior=temps.slice(i-6,i), run=temps.slice(i,i+3);
+    if(run.length<3) break;
+    var ltl=Math.max.apply(null,prior.map(function(p){return p.t;}));
+    if(run[0].t>ltl&&run[1].t>ltl&&run[2].t>ltl){
+      shift={ltl:ltl,riseDay:run[0].day,highDays:run.map(function(x){return x.day;}),
+        thirdDay:run[2].day,thirdTemp:run[2].t,full:run[2].t>=ltl+0.4,firstLowDay:prior[0].day};
+      break;
+    }
+  }
+  var peakDay=null;
+  for(d=1;d<=DAYS;d++) if(days[d]&&days[d].peak) peakDay=d;
+
+  var firstMucus=null;
+  for(d=1;d<=DAYS;d++){ r=days[d]; if(!r) continue;
+    if((r.symbol&&r.symbol!=="none")||(r.sensation&&r.sensation!=="d")||(r.character&&r.character!=="n")){
+      firstMucus=d; break; } }
+
+  var ruleDay=(rules.doering&&rules.doeringDay)?rules.doeringDay:Number(rules.phase1Rule);
+  var phase1End=ruleDay;
+  if(firstMucus&&firstMucus-1<phase1End) phase1End=firstMucus-1;
+  if(phase1End<0) phase1End=0;
+
+  var peakPlus3=peakDay?peakDay+3:null;
+  var phase3Start=(shift&&peakPlus3)?Math.max(shift.thirdDay,peakPlus3)+1:null;
+  return {shift:shift,peakDay:peakDay,peakPlus3:peakPlus3,firstMucus:firstMucus,
+    phase1End:phase1End,phase3Start:phase3Start,ruleDay:ruleDay};
+}
+function chartLength(c){
+  if(c.cycleLength) return c.cycleLength;
+  var max=0;
+  for(var k in c.days){ var r=c.days[k], any=false;
+    for(var f in r){ var v=r[f]; if(v!==null&&v!==""&&v!==false) any=true; }
+    if(any) max=Math.max(max,Number(k)); }
+  return max||null;
+}
+function history(){
+  var lengths=state.charts.map(chartLength).filter(Boolean), earliest=null;
+  var recent=state.charts.slice(-12);
+  for(var i=0;i<recent.length;i++){
+    var a=analyze(recent[i],state.rules);
+    if(a.shift&&(earliest===null||a.shift.riseDay<earliest)) earliest=a.shift.riseDay;
+  }
+  return {lengths:lengths, shortest:lengths.length?Math.min.apply(null,lengths):null,
+    longest:lengths.length?Math.max.apply(null,lengths):null, earliestRise:earliest};
+}
+function activeRules(){
+  var h=history();
+  return {phase1Rule:state.rules.phase1Rule,doering:state.rules.doering,
+    doeringDay:h.earliestRise?h.earliestRise-7:null};
+}
+
+/* ============================================================
+   Views
+   ============================================================ */
+function startDate(){ return parseISO(chart().startDate); }
+function dateFor(d){ var s=startDate(); return s?addDays(s,d-1):null; }
+function todayDay(){ var s=startDate(); return s?between(s,new Date())+1:null; }
+
+function header(){
+  var opts=state.charts.map(function(c){
+    return '<option value="'+c.id+'"'+(c.id===state.activeId?" selected":"")+'>Chart '+c.number+" \u00B7 "+esc(c.startDate)+"</option>";
+  }).join("");
+  return '<div class="top"><div class="top-row"><div>'+
+    "<h1>Cycle chart</h1><div class=\"sub\">Sympto-thermal record</div></div>"+
+    '<select class="pick" data-change="activeId">'+opts+"</select></div>"+
+    '<div class="savetag">'+esc(saveTag)+"</div></div>"+
+    (storageOK?"":'<div class="warn">This copy can\u2019t save to the browser here. Your entries stay on screen until you close the tab \u2014 export your data before you leave, or install it to the Home Screen (see Setup).</div>');
+}
+
+function chipRow(field,opts,cur){
+  return '<div class="chips">'+opts.map(function(o){
+    return '<button class="chip'+(cur===o.v?" on":"")+'" data-act="choice" data-field="'+field+'" data-val="'+o.v+'"><b>'+o.g+"</b>"+o.n+"</button>";
+  }).join("")+"</div>";
+}
+
+function dayView(){
+  var s=SCALE[state.unit], r=dayRec(selected), dt=dateFor(selected), td=todayDay();
+  var tv=(typeof r.temp==="number")?(state.unit==="F"?r.temp:fToC(r.temp)).toFixed(s.dec):"";
+  var title=dt?dt.toLocaleDateString(undefined,{weekday:"long",month:"long",day:"numeric"}):"Set a start date in Setup";
+  var h='<div class="wrap"><div class="card">'+
+    '<div class="dayhead"><div><div class="eyebrow">Day '+selected+" of cycle</div><h2>"+esc(title)+"</h2></div>"+
+    '<div class="inline"><button class="step" data-act="prev">\u2039</button>'+
+    '<button class="step" data-act="next">\u203A</button></div></div>';
+  if(td>=1&&td<=DAYS&&td!==selected) h+='<button class="seg wide" data-act="today" style="margin-bottom:12px">Jump to today (day '+td+")</button>";
+  if(selected===6) h+='<p class="flag">Day 6 \u2014 time for a self breast exam.</p>';
+
+  h+='<label class="field"><span>Waking temperature ('+s.unit+")</span>"+
+    '<div class="tempbox"><button class="step" data-act="tminus">\u2212</button>'+
+    '<input type="number" inputmode="decimal" step="'+s.step+'" data-input="temp" value="'+tv+'" placeholder="'+s.bottom.toFixed(s.dec)+'">'+
+    '<button class="step" data-act="tplus">+</button></div></label>'+
+    '<div class="inline" style="margin-bottom:12px">'+
+    '<button class="seg'+(r.disturbed?" on":"")+'" data-act="disturbed">Disturbed temp</button>'+
+    '<button class="seg'+(r.coitus?" on":"")+'" data-act="coitus">\u2713 Coitus</button>'+
+    '<button class="seg'+(r.peak?" on":"")+'" data-act="peak">P Peak day</button></div>'+
+    '<label class="field"><span>Time taken</span><input type="time" data-input="time" value="'+esc(r.time||state.temperature.time||"")+'"></label>'+
+    "</div>";
+
+  h+='<div class="card"><h2>Menstruation</h2>'+chipRow("menses",MENSES,r.menses||null)+"</div>";
+  h+='<div class="card"><h2>Mucus sign</h2>'+
+    '<label class="field"><span>Symbol</span></label>'+chipRow("symbol",SYMBOL,r.symbol||null)+
+    '<label class="field" style="margin-top:12px"><span>Sensation</span></label>'+chipRow("sensation",SENSATION,r.sensation||null)+
+    '<label class="field" style="margin-top:12px"><span>Characteristics</span></label>'+chipRow("character",CHARACTER,r.character||null)+
+    '<p class="note">Peak day is the last day of more-fertile mucus before the drying-up begins \u2014 mark it above once you can see it has passed.</p></div>';
+
+  h+='<div class="card"><h2>Daily notes</h2>';
+  state.customRows.forEach(function(cr){
+    h+='<label class="field"><span>'+esc(cr.label||"Custom row")+"</span>"+
+      '<input type="text" data-input="custom:'+cr.id+'" value="'+esc((r.custom||{})[cr.id]||"")+'"></label>';
+  });
+  h+='<label class="field"><span>Notes</span><textarea rows="3" data-input="notes" '+
+    'placeholder="Spotting, schedule change, pains, mood, illness">'+esc(r.notes||"")+"</textarea></label></div></div>";
+  return h;
+}
+
+function graphSVG(a){
+  var s=SCALE[state.unit], range=s.top-s.bottom, W=DAYS*COL, c=chart();
+  var toU=function(f){return state.unit==="F"?f:fToC(f);};
+  var y=function(v){return (s.top-v)/range*CHART_H;};
+  var out='<svg class="graph" width="'+W+'" height="'+CHART_H+'" data-graph="1">';
+  var v,lat=[];
+  for(v=s.top;v>=s.bottom-1e-9;v-=s.step) lat.push(clean(v,s.dec));
+  lat.forEach(function(val){
+    var major=Math.abs(val/s.major-Math.round(val/s.major))<1e-6;
+    out+='<line class="'+(major?"gm":"g")+'" x1="0" x2="'+W+'" y1="'+y(val)+'" y2="'+y(val)+'"/>';
+  });
+  for(var i=0;i<=DAYS;i++) out+='<line class="g" x1="'+i*COL+'" x2="'+i*COL+'" y1="0" y2="'+CHART_H+'"/>';
+  out+='<rect class="selrect" x="'+(selected-1)*COL+'" y="0" width="'+COL+'" height="'+CHART_H+'"/>';
+
+  if(a.shift){
+    var ly=y(toU(a.shift.ltl));
+    out+='<line class="ltl" x1="'+(a.shift.firstLowDay-1)*COL+'" x2="'+W+'" y1="'+ly+'" y2="'+ly+'"/>'+
+      '<text class="ltltag" x="'+(W-4)+'" y="'+(ly-5)+'" text-anchor="end">low temperature level</text>';
+  }
+  var pts=[],d;
+  for(d=1;d<=DAYS;d++){ var r=c.days[d];
+    if(r&&typeof r.temp==="number") pts.push({day:d,v:toU(r.temp),dis:!!r.disturbed}); }
+  var seg=[],runs=[];
+  pts.forEach(function(p){
+    if(seg.length&&p.day!==seg[seg.length-1].day+1){ runs.push(seg); seg=[]; }
+    seg.push(p);
+  });
+  if(seg.length) runs.push(seg);
+  runs.forEach(function(rr){
+    out+='<polyline class="tline" points="'+rr.map(function(p){return ((p.day-0.5)*COL)+","+y(p.v);}).join(" ")+'"/>';
+  });
+  pts.forEach(function(p){
+    out+='<circle class="'+(p.dis?"dot-open":"dot")+'" cx="'+((p.day-0.5)*COL)+'" cy="'+y(p.v)+'" r="4.5"/>';
+  });
+  if(a.shift) a.shift.highDays.forEach(function(dd,i){
+    out+='<text class="cnt" x="'+((dd-0.5)*COL)+'" y="'+(y(toU(c.days[dd].temp))-11)+'" text-anchor="middle">'+(i+1)+"</text>";
+  });
+  return out+"</svg>";
+}
+
+function row(label,sub,cells){
+  return '<div class="row"><div class="gut"><span>'+esc(label)+"</span>"+
+    (sub?"<em>"+esc(sub)+"</em>":"")+'</div><div class="cells" style="width:'+(DAYS*COL)+'px">'+cells+"</div></div>";
+}
+function cells(fn){ var out=""; for(var d=1;d<=DAYS;d++) out+=fn(d); return out; }
+
+function chartView(){
+  var c=chart(), a=analyze(c,activeRules()), s=SCALE[state.unit], td=todayDay();
+  var h='<div class="wrap"><div class="readout">'+
+    '<div><span class="k">Thermal shift</span><span class="v">'+
+      (a.shift?("day "+a.shift.riseDay+" \u00B7 3rd high day "+a.shift.thirdDay+(a.shift.full?" \u00B7 full":" \u00B7 under 0.4\u00B0F")):"not yet")+"</span></div>"+
+    '<div><span class="k">Peak day</span><span class="v">'+
+      (a.peakDay?("day "+a.peakDay+" \u00B7 P+3 = day "+a.peakPlus3):"not marked")+"</span></div>"+
+    '<div><span class="k">Phase I ends</span><span class="v">day '+a.phase1End+"</span></div>"+
+    '<div><span class="k">Phase III begins</span><span class="v">'+
+      (a.phase3Start?("day "+a.phase3Start):"waiting on both signs")+"</span></div></div>";
+
+  h+='<div class="scroll" id="scroller"><div class="inner">';
+  h+=row("Day of cycle","",cells(function(d){
+    return '<button class="cell band'+(d===6?" day6":"")+(d===td?" today":"")+(d===selected?" sel":"")+
+      '" data-act="pick" data-day="'+d+'">'+d+"</button>";
+  }));
+
+  var segs=[];
+  if(a.phase1End>=1) segs.push({f:1,t:a.phase1End,n:"I"});
+  var p2f=Math.max(1,a.phase1End+1), p2t=a.phase3Start?a.phase3Start-1:DAYS;
+  if(p2t>=p2f) segs.push({f:p2f,t:p2t,n:"II"});
+  if(a.phase3Start&&a.phase3Start<=DAYS) segs.push({f:a.phase3Start,t:DAYS,n:"III"});
+  h+=row("Phase","",'<div class="phaseband" style="width:'+(DAYS*COL)+'px">'+segs.map(function(p){
+    return '<span class="ph'+p.n+'" style="left:'+((p.f-1)*COL)+"px;width:"+((p.t-p.f+1)*COL)+'px">'+p.n+"</span>";
+  }).join("")+"</div>");
+
+  h+=row("Date","",cells(function(d){ var dt=dateFor(d);
+    return '<button class="cell quiet'+(d===selected?" sel":"")+'" data-act="pick" data-day="'+d+'">'+
+      (dt?(dt.getMonth()+1)+"/"+dt.getDate():"")+"</button>"; }));
+  h+=row("Day of week","",cells(function(d){ var dt=dateFor(d);
+    return '<button class="cell quiet'+(d===selected?" sel":"")+'" data-act="pick" data-day="'+d+'">'+
+      (dt?WEEKDAYS[dt.getDay()][0]:"")+"</button>"; }));
+
+  // graph row with its own sticky axis
+  var lat=[],v;
+  for(v=s.top;v>=s.bottom-1e-9;v-=s.step) lat.push(clean(v,s.dec));
+  var axis="";
+  lat.forEach(function(val){
+    if(Math.abs(val/s.major-Math.round(val/s.major))<1e-6)
+      axis+='<i style="top:'+(((s.top-val)/(s.top-s.bottom)*CHART_H)-6)+'px">'+val.toFixed(s.dec)+"</i>";
+  });
+  h+='<div class="row"><div class="axis" style="height:'+CHART_H+'px">'+axis+"</div>"+graphSVG(a)+"</div>";
+
+  h+=row("Menstruation","\u2715 \u2571 \u25CF",cells(function(d){
+    var val=dayRec(d).menses, o=MENSES.filter(function(x){return x.v===val;})[0];
+    return '<button class="cell menses'+(val?" filled":"")+(d===selected?" sel":"")+
+      '" data-act="cycle" data-row="menses" data-day="'+d+'">'+(o?o.g:"")+"</button>"; }));
+  h+=row("Coitus","\u2713",cells(function(d){
+    return '<button class="cell coitus'+(d===selected?" sel":"")+'" data-act="toggle" data-field="coitus" data-day="'+d+'">'+
+      (dayRec(d).coitus?"\u2713":"")+"</button>"; }));
+  h+=row("Peak day","P + 1 2 3",cells(function(d){
+    var a2=analyze(chart(),activeRules()), isP=!!dayRec(d).peak;
+    var cnt=(a2.peakDay&&d>a2.peakDay&&d<=a2.peakDay+3)?(d-a2.peakDay):null;
+    return '<button class="cell peak'+(isP?" filled":"")+(d===selected?" sel":"")+
+      '" data-act="peakcell" data-day="'+d+'">'+(isP?"P":(cnt?"<em>"+cnt+"</em>":""))+"</button>"; }));
+  h+=row("Symbol","\u25CB \u2296 \u2295",cells(function(d){
+    var val=dayRec(d).symbol, o=SYMBOL.filter(function(x){return x.v===val;})[0];
+    return '<button class="cell symbol '+(val||"")+(d===selected?" sel":"")+
+      '" data-act="cycle" data-row="symbol" data-day="'+d+'">'+(o?o.g:"")+"</button>"; }));
+  h+=row("Sensation","d m w sl",cells(function(d){
+    var val=dayRec(d).sensation;
+    return '<button class="cell letter'+(d===selected?" sel":"")+
+      '" data-act="cycle" data-row="sensation" data-day="'+d+'">'+(val?"<b>"+val+"</b>":"")+"</button>"; }));
+  h+=row("Characteristics","n t s",cells(function(d){
+    var val=dayRec(d).character;
+    return '<button class="cell letter'+(d===selected?" sel":"")+
+      '" data-act="cycle" data-row="character" data-day="'+d+'">'+(val?"<b>"+val+"</b>":"")+"</button>"; }));
+  state.customRows.forEach(function(cr){
+    h+=row(cr.label||"Custom","",cells(function(d){
+      var val=(dayRec(d).custom||{})[cr.id]||"";
+      return '<button class="cell custom'+(d===selected?" sel":"")+'" data-act="pick" data-day="'+d+'">'+
+        esc(val.slice(0,4))+"</button>"; }));
+  });
+  h+=row("Notes","",cells(function(d){
+    return '<button class="cell quiet'+(d===selected?" sel":"")+'" data-act="pick" data-day="'+d+'">'+
+      (dayRec(d).notes?"\u2022":"")+"</button>"; }));
+  h+="</div></div>";
+  h+='<p class="hint">Tap the graph to plot a temperature \u2014 tap the same spot again to clear it. '+
+    "Tap any row cell to step through its marks. Phase bands follow the rules you picked in Setup; "+
+    "they\u2019re a reading aid, not a substitute for your own charting instruction.</p></div>";
+  return h;
+}
+
+function setupView(){
+  var hst=history(), ar=activeRules(), c=chart(), t=state.temperature, p=state.profile;
+  var h='<div class="wrap">';
+
+  h+='<div class="card"><h2>This chart</h2><div class="grid3">'+
+    '<label class="field"><span>Chart #</span><input type="number" data-input="chart.number" value="'+c.number+'"></label>'+
+    '<label class="field"><span>Day 1</span><input type="date" data-input="chart.startDate" value="'+esc(c.startDate)+'"></label>'+
+    '<label class="field"><span>Length</span><input type="number" inputmode="numeric" placeholder="days" data-input="chart.cycleLength" value="'+(c.cycleLength||"")+'"></label>'+
+    "</div>"+
+    '<div class="inline"><button class="seg wide" data-act="newCycle">Start new cycle</button>'+
+    '<button class="seg danger" data-act="deleteChart"'+(state.charts.length===1?" disabled":"")+">Delete chart</button></div></div>";
+
+  h+='<div class="card"><h2>Cycle history</h2><p class="note" style="margin-top:0">Worked out from the cycles saved on this phone.</p>'+
+    '<div class="grid2">'+
+    "<div><span class=\"k\" style=\"font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)\">Shortest</span><div style=\"font-family:ui-monospace,monospace;font-size:17px;color:var(--ink)\">"+(hst.shortest||"\u2014")+"</div></div>"+
+    "<div><span style=\"font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)\">Longest</span><div style=\"font-family:ui-monospace,monospace;font-size:17px;color:var(--ink)\">"+(hst.longest||"\u2014")+"</div></div>"+
+    "<div><span style=\"font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)\">Cycles recorded</span><div style=\"font-family:ui-monospace,monospace;font-size:17px;color:var(--ink)\">"+hst.lengths.length+"</div></div>"+
+    "<div><span style=\"font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)\">Earliest rise</span><div style=\"font-family:ui-monospace,monospace;font-size:17px;color:var(--ink)\">"+(hst.earliestRise?("day "+hst.earliestRise):"\u2014")+"</div></div>"+
+    "</div>"+
+    '<label class="field" style="margin-top:12px"><span>End of Phase I</span><div class="inline">'+
+    '<button class="seg'+(!state.rules.doering&&state.rules.phase1Rule==="5"?" on":"")+'" data-act="p1" data-val="5">Day 5</button>'+
+    '<button class="seg'+(!state.rules.doering&&state.rules.phase1Rule==="6"?" on":"")+'" data-act="p1" data-val="6">Day 6</button>'+
+    '<button class="seg'+(state.rules.doering?" on":"")+'" data-act="p1" data-val="doering"'+(hst.earliestRise?"":" disabled")+">Doering"+
+      (ar.doeringDay?(" (day "+ar.doeringDay+")"):"")+"</button></div></label>"+
+    '<p class="note">Phase I also closes the day before mucus first appears, whichever comes first.</p></div>';
+
+  h+='<div class="card"><h2>Temperature</h2>'+
+    '<label class="field"><span>Usual time</span><input type="time" data-input="temperature.time" value="'+esc(t.time)+'"></label>'+
+    '<label class="field"><span>Site</span><div class="inline">'+
+    ["oral","vaginal","wearable"].map(function(m){
+      return '<button class="seg'+(t.method===m?" on":"")+'" data-act="method" data-val="'+m+'">'+m[0].toUpperCase()+m.slice(1)+"</button>";
+    }).join("")+"</div></label>";
+  if(t.method==="wearable"){
+    h+='<label class="field"><span>Device</span><div class="inline">'+
+      ["ring","watch","armband","other"].map(function(m){
+        return '<button class="seg'+(t.device===m?" on":"")+'" data-act="device" data-val="'+m+'">'+m[0].toUpperCase()+m.slice(1)+"</button>";
+      }).join("")+"</div></label>"+
+      '<label class="field"><span>Which one</span><input type="text" data-input="temperature.deviceDetail" value="'+esc(t.deviceDetail)+'"></label>';
+  }
+  h+='<label class="field"><span>Scale</span><div class="inline">'+
+    ["F","C"].map(function(u){
+      return '<button class="seg'+(state.unit===u?" on":"")+'" data-act="unit" data-val="'+u+'">\u00B0'+u+"</button>";
+    }).join("")+'</div></label><p class="note">Use the same device and scale for the whole cycle.</p></div>';
+
+  h+='<div class="card"><h2>Custom rows</h2><p class="note" style="margin-top:0">Hormones, medications, mood, symptoms \u2014 anything you track daily.</p>';
+  state.customRows.forEach(function(cr,i){
+    h+='<div class="inline" style="margin-bottom:8px"><input type="text" style="flex:1" placeholder="Row '+(i+1)+
+      '" data-input="customRow:'+cr.id+'" value="'+esc(cr.label)+'">'+
+      '<button class="seg" data-act="removeRow" data-id="'+cr.id+'">Remove</button></div>';
+  });
+  h+='<button class="seg" data-act="addRow">Add row</button></div>';
+
+  h+='<div class="card"><h2>Personal information</h2>'+
+    '<label class="field"><span>Name</span><input type="text" data-input="profile.name" value="'+esc(p.name)+'"></label>'+
+    '<label class="field"><span>Email</span><input type="email" data-input="profile.email" value="'+esc(p.email)+'"></label>'+
+    '<div class="grid3">'+
+    '<label class="field"><span>Age</span><input type="text" data-input="profile.age" value="'+esc(p.age)+'"></label>'+
+    '<label class="field"><span>Height</span><input type="text" data-input="profile.height" value="'+esc(p.height)+'"></label>'+
+    '<label class="field"><span>Weight</span><input type="text" data-input="profile.weight" value="'+esc(p.weight)+'"></label>'+
+    "</div></div>";
+
+  h+='<div class="card"><h2>Your data</h2>'+
+    '<p class="note" style="margin-top:0">Everything stays on this phone. Nothing is sent anywhere. Export now and then so you have a copy.</p>'+
+    '<div class="inline" style="margin-top:10px">'+
+    '<button class="seg wide" data-act="csv">Export this chart (CSV)</button>'+
+    '<button class="seg wide" data-act="json">Export all charts (JSON)</button>'+
+    '<button class="seg wide" data-act="import">Import JSON</button></div></div>';
+
+  h+='<div class="card"><h2>Keep it on your Home Screen</h2>'+
+    '<p class="note" style="margin-top:0">Open this page in Safari, tap the Share button, then <b>Add to Home Screen</b>. '+
+    "It opens full screen with no browser chrome and works with no signal. Saved entries live in Safari\u2019s storage for this page, "+
+    "so keep using the same icon rather than reopening the file from Files.</p></div></div>";
+  return h;
+}
+
+function tabs(){
+  var t=[["day","Day",'<path d="M4 6h16M4 12h16M4 18h10"/>'],
+         ["chart","Chart",'<path d="M4 18l5-6 4 3 7-9"/><path d="M3 21h18"/>'],
+         ["setup","Setup",'<circle cx="12" cy="12" r="3.2"/><path d="M12 3v2M12 19v2M3 12h2M19 12h2M5.6 5.6l1.4 1.4M17 17l1.4 1.4M18.4 5.6L17 7M7 17l-1.4 1.4"/>']];
+  return '<div class="tabs">'+t.map(function(x){
+    return '<button class="'+(view===x[0]?"on":"")+'" data-act="tab" data-val="'+x[0]+'">'+
+      '<svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">'+x[2]+"</svg>"+x[1]+"</button>";
+  }).join("")+"</div>";
+}
+
+function render(){
+  var sc=document.getElementById("scroller");
+  if(sc) scrollX=sc.scrollLeft;
+  document.getElementById("app").innerHTML=
+    header()+(view==="day"?dayView():view==="chart"?chartView():setupView())+tabs();
+  var sc2=document.getElementById("scroller");
+  if(sc2){
+    if(scrollX>0) sc2.scrollLeft=scrollX;
+    else{
+      var want=(selected-1)*COL-sc2.clientWidth/2+96;
+      sc2.scrollLeft=Math.max(0,want);
+    }
+  }
+}
+
+/* ============================================================
+   Events
+   ============================================================ */
+function setPath(path,val){
+  var parts=path.split("."), obj=state;
+  if(parts[0]==="chart"){ obj=chart(); parts.shift(); }
+  while(parts.length>1){ obj=obj[parts.shift()]; }
+  obj[parts[0]]=val;
+}
+
+document.addEventListener("click",function(e){
+  var el=e.target.closest("[data-act]");
+  if(!el) return;
+  var act=el.dataset.act, day=Number(el.dataset.day), s=SCALE[state.unit];
+  switch(act){
+    case "tab": view=el.dataset.val; render(); return;
+    case "pick": selected=day; render(); return;
+    case "prev": selected=Math.max(1,selected-1); render(); return;
+    case "next": selected=Math.min(DAYS,selected+1); render(); return;
+    case "today": selected=Math.min(DAYS,Math.max(1,todayDay())); render(); return;
+    case "cycle":
+      cycleVal(day,el.dataset.row,{menses:MENSES,symbol:SYMBOL,sensation:SENSATION,character:CHARACTER}[el.dataset.row]);
+      selected=day; render(); return;
+    case "toggle": setDay(day,{coitus:!dayRec(day).coitus}); selected=day; render(); return;
+    case "peakcell": setPeak(day,!dayRec(day).peak); selected=day; render(); return;
+    case "choice": {
+      var f=el.dataset.field, cur=dayRec(selected)[f]||null, o={};
+      o[f]=(cur===el.dataset.val)?null:el.dataset.val;
+      setDay(selected,o); render(); return;
+    }
+    case "disturbed": setDay(selected,{disturbed:!dayRec(selected).disturbed}); render(); return;
+    case "coitus": setDay(selected,{coitus:!dayRec(selected).coitus}); render(); return;
+    case "peak": setPeak(selected,!dayRec(selected).peak); render(); return;
+    case "tplus": case "tminus": {
+      var r=dayRec(selected), base=(typeof r.temp==="number")?(state.unit==="F"?r.temp:fToC(r.temp)):(state.unit==="F"?97.8:36.55);
+      var next=clean(base+(act==="tplus"?s.step:-s.step),s.dec);
+      next=Math.min(s.top,Math.max(s.bottom,next));
+      setDay(selected,{temp:clean(state.unit==="F"?next:cToF(next),2)}); render(); return;
+    }
+    case "p1":
+      if(el.dataset.val==="doering") state.rules.doering=true;
+      else { state.rules.doering=false; state.rules.phase1Rule=el.dataset.val; }
+      save(); render(); return;
+    case "method": state.temperature.method=el.dataset.val; save(); render(); return;
+    case "device": state.temperature.device=el.dataset.val; save(); render(); return;
+    case "unit": state.unit=el.dataset.val; save(); render(); return;
+    case "addRow": state.customRows.push({id:uid(),label:""}); save(); render(); return;
+    case "removeRow":
+      state.customRows=state.customRows.filter(function(r){return r.id!==el.dataset.id;});
+      save(); render(); return;
+    case "newCycle": {
+      var today=toISO(new Date()), prev=chart(), ps=parseISO(prev.startDate);
+      if(ps){ var len=between(ps,parseISO(today)); if(len>0&&len<=60) prev.cycleLength=len; }
+      var max=0; state.charts.forEach(function(x){max=Math.max(max,x.number);});
+      var nc=newChart(max+1,today);
+      state.charts.push(nc); state.activeId=nc.id; selected=1; view="day"; save(); render(); return;
+    }
+    case "deleteChart":
+      if(state.charts.length===1) return;
+      if(!confirm("Delete chart "+chart().number+"? This can\u2019t be undone.")) return;
+      state.charts=state.charts.filter(function(x){return x.id!==state.activeId;});
+      state.activeId=state.charts[state.charts.length-1].id; save(); render(); return;
+    case "csv": exportCSV(); return;
+    case "json": exportJSON(); return;
+    case "import": document.getElementById("importer").click(); return;
+  }
+});
+
+document.addEventListener("input",function(e){
+  var el=e.target.closest("[data-input]");
+  if(!el) return;
+  var key=el.dataset.input, val=el.value;
+  if(key==="temp"){
+    if(val===""){ setDay(selected,{temp:null}); }
+    else{
+      var n=Number(val);
+      if(!isNaN(n)){
+        var f=state.unit==="F"?n:cToF(n);
+        if(f>=93&&f<=104) setDay(selected,{temp:clean(f,2)}); /* ignore half-typed numbers */
+      }
+    }
+    return;
+  }
+  if(key==="time"||key==="notes"){ var o={}; o[key]=val; setDay(selected,o); return; }
+  if(key.indexOf("custom:")===0){
+    var id=key.slice(7), r=dayRec(selected), cm=r.custom||{};
+    cm[id]=val; setDay(selected,{custom:cm}); return;
+  }
+  if(key.indexOf("customRow:")===0){
+    var rid=key.slice(10);
+    state.customRows.forEach(function(r){ if(r.id===rid) r.label=val; });
+    save(); return;
+  }
+  if(key==="chart.number"||key==="chart.cycleLength"){
+    setPath(key,val===""?null:Number(val)); save(); return;
+  }
+  setPath(key,val); save();
+});
+
+document.addEventListener("change",function(e){
+  var el=e.target.closest("[data-change]");
+  if(el&&el.dataset.change==="activeId"){ state.activeId=el.value; selected=1; save(); render(); return; }
+  var inp=e.target.closest("[data-input]");
+  if(inp&&inp.dataset.input==="chart.startDate"){ render(); }
+});
+
+/* tap the graph to plot */
+document.addEventListener("click",function(e){
+  var svg=e.target.closest("svg[data-graph]");
+  if(!svg) return;
+  var s=SCALE[state.unit], range=s.top-s.bottom, box=svg.getBoundingClientRect();
+  var px=e.clientX-box.left, py=e.clientY-box.top;
+  var day=Math.min(DAYS,Math.max(1,Math.floor(px/(box.width/DAYS))+1));
+  var raw=s.top-(py/box.height)*range;
+  var val=Math.min(s.top,Math.max(s.bottom,clean(Math.round(raw/s.step)*s.step,s.dec)));
+  var cur=dayRec(day).temp;
+  var same=(typeof cur==="number")&&Math.abs((state.unit==="F"?cur:fToC(cur))-val)<s.step/2;
+  setDay(day,{temp:same?null:clean(state.unit==="F"?val:cToF(val),2)});
+  selected=day; render();
+});
+
+/* ============================================================
+   Import / export
+   ============================================================ */
+function download(name,text,type){
+  var blob=new Blob([text],{type:type}), url=URL.createObjectURL(blob);
+  var a=document.createElement("a"); a.href=url; a.download=name;
+  document.body.appendChild(a); a.click(); document.body.removeChild(a);
+  setTimeout(function(){URL.revokeObjectURL(url);},2000);
+}
+function exportJSON(){ download("cycle-charts.json",JSON.stringify(state,null,2),"application/json"); }
+function exportCSV(){
+  var c=chart();
+  var head=["Cycle day","Date","Weekday","Temp F","Temp C","Time","Disturbed","Menstruation","Coitus",
+    "Peak day","Symbol","Sensation","Characteristic"]
+    .concat(state.customRows.map(function(r){return r.label||"Custom";})).concat(["Notes"]);
+  var rows=[head];
+  for(var d=1;d<=DAYS;d++){
+    var r=c.days[d]||{}, dt=dateFor(d);
+    rows.push([d, dt?toISO(dt):"", dt?WEEKDAYS[dt.getDay()]:"",
+      typeof r.temp==="number"?r.temp.toFixed(1):"",
+      typeof r.temp==="number"?fToC(r.temp).toFixed(2):"",
+      r.time||"", r.disturbed?"yes":"", r.menses||"", r.coitus?"yes":"", r.peak?"P":"",
+      r.symbol||"", r.sensation||"", r.character||""]
+      .concat(state.customRows.map(function(cr){return (r.custom||{})[cr.id]||"";}))
+      .concat([(r.notes||"").replace(/\n/g," ")]));
+  }
+  var csv=rows.map(function(row){ return row.map(function(x){
+    return '"'+String(x).replace(/"/g,'""')+'"'; }).join(","); }).join("\n");
+  download("cycle-chart-"+c.number+".csv",csv,"text/csv");
+}
+document.getElementById("importer").addEventListener("change",function(e){
+  var f=e.target.files[0]; if(!f) return;
+  var fr=new FileReader();
+  fr.onload=function(){
+    try{
+      var data=JSON.parse(fr.result);
+      if(!data||!data.charts||!data.charts.length) throw 0;
+      if(!confirm("Replace what\u2019s on this phone with "+data.charts.length+" chart(s) from the file?")) return;
+      state=data;
+      if(!state.activeId) state.activeId=state.charts[state.charts.length-1].id;
+      if(!state.customRows) state.customRows=[{id:uid(),label:""}];
+      selected=1; save(); render();
+    }catch(err){ alert("That file isn\u2019t a chart export \u2014 pick the JSON file this app wrote."); }
+  };
+  fr.readAsText(f);
+  e.target.value="";
+});
+
+/* ============================================================
+   Start
+   ============================================================ */
+state=load()||initialState();
+if(!state.activeId) state.activeId=state.charts[state.charts.length-1].id;
+var td=todayDay();
+selected=(td>=1&&td<=DAYS)?td:1;
+render();
+</script>
+</body>
+</html>
